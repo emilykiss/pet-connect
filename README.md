@@ -11,7 +11,7 @@ I was thinking:
 Model 1- users
 Model 2- pets
 Model 3- actions columns -> like, dislike, superlike
-![ERD](ERD.png)
+![ERD](newERD.png)
 
 
 ## Layout 
