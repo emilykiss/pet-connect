@@ -57,6 +57,18 @@ app.get('/', (req, res) => {
 })
 // Controllers
 app.use('/users', require('./controllers/users'))
+
+
+
+
+
+
+
+
+
+
+
+
 // Error handling middlewar - 404 error MUST be at the bottom  of the page
 app.use((req, res, next) => {
 // Render the error here

@@ -1,0 +1,14 @@
+<h3>See you later, <%= user.email %>! </h3>
+
+<% if (msg) { %>
+    <div>
+        <p><%= msg %></p>
+    </div>
+<% } %>
+
+           
+<form action="/users/logout" method="POST">
+     <button type="submit" onclick= logout() >Logout!</button>
+</form>
+
+

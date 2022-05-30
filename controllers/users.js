@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
         const foundUser = await db.user.findOne({
             where: { email: req.body.email }
         })
-        const msg = 'You cant sit with us. You are not authenticated.'
+        const msg = 'You are not authenticated.'
         if (!foundUser) {
             console.log('email not found')
             res.render('users/login.ejs', {msg})
@@ -73,7 +73,20 @@ router.post('/login', async (req, res) => {
 })
 // GET /users/logout -- clear the coookie to log the user out
 router.get('/logout', (req, res) => {
-    res.send('log the user out')
+    res.render("users/logout.ejs", { msg: null })
+})
+
+router.post('/logout',  (req, res) => {
+    try {
+        const logout =  () => {
+            window.localStorage.clear()
+            window.location.reload(true)
+            window.location.replace('/')
+            
+        }
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 router.get('/profile', (req, res) => {
