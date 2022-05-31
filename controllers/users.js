@@ -96,7 +96,7 @@ router.get('/pet', async (req, res) => {
         url: url,
         headers: {
           Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjdlZWFiOTcwZTBhM2M4ODk4YzMyMjQ1OGRiZmI1OTEzMmVlYzViYWE0MTliNTRmYTVhZDM5N2FmNTZiMmRkZWFlZTMzNDk1NTMyYTZiNzNhIiwiaWF0IjoxNjU0MDI5NjkwLCJuYmYiOjE2NTQwMjk2OTAsImV4cCI6MTY1NDAzMzI5MCwic3ViIjoiIiwic2NvcGVzIjpbXX0.rKkeJEf0djQtk5S3GoEuzgjhqORhNjCX_LhY8Bww3gYWCnqGBkrYRUyhE-yW89n3oOrFNmf4wC9kMpfzrsY51LhB50j1E_hnfP7oWJDKjhKDBOesWsPAqkM3LiR2MKaQb2XaneN8RTCQiG58ccqHjiTTMQ4coF9AW2ywQCevonNqunJUJX8iOqztCbRIXpk7pFi6r0WDo-gfHNzAjyOXW5McoS6RN5lxjr2OA8oi9EZe4Rqg7FxemLS0vkL0OTMvuwfceNNZSKW_4-oV_emnS05-YJoNYSETz3Qn06qUsLNFaH9l9EZcyEMrjjeQICsEPiQ7LWHEOKZ-2Jpr68baHQ",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjRlYjFkOWQ0MTA0YWNlMDdiNDY1ZDE1YTI0YTYzN2MyZmQ0NjlhZmJmMzJjMWYxMjg4YWY5MWU0ZTQzMmU1NzUwNTEzNzgxN2Y1ZjI1MGRkIiwiaWF0IjoxNjU0MDM3NjMwLCJuYmYiOjE2NTQwMzc2MzAsImV4cCI6MTY1NDA0MTIzMCwic3ViIjoiIiwic2NvcGVzIjpbXX0.yRZxVCxvTrbqrydCwX8QpjHWj9cLSBwFaWi0rpKtOqpOX9MHqnp-If8VhRGpBAJftTyVYtvQbyaSyO_0cg9X5YwX0_FZ4IEsDruae5eeOhOL5eIX4uFdV2SdKOTTZxWzhJZTJxvoF_ysZwlfTxVr9EGyIFq4B5HHHdUXu3D2vizLMw1q6TQfyXBwd0lEYxEHryhMoz5L2g5k3b9l6dflbleyMDWoOlJMecBZlmKM7IPWG3QsDN5ju8NR405YwdgDNMH5p3C5zFWfVjFrEch2GQleXIkehtvU1PvOZ8bgezyCwjlXmvw6IeLIePaj2XqU9XAS4O-8GBrYiogVEYfcPA",
         },
       });
       const animals = await response.data.animals
@@ -106,37 +106,55 @@ router.get('/pet', async (req, res) => {
     }
 })
 
-router.get("/favorites", async (req, res) => {
-  const favorites = await db.favorite.findAll()
-  res.render("users/favorites.ejs", {animals:favorites})
-  // if rec.user.id === current user, do this
-})
-router.post('/favorites', async (req, res) => {
-    // const favorites =  await db.fave.findAll()
-    await db.favorite.create({
-      name: req.body.name,
-      age: req.body.age
-    })
-    res.redirect("users/favorites.ejs")
-    // if rec.user.id === current user, do this 
-})
-// router.get('/favorites', async (req, res)=> {
+
+// router.get("/favorites", async (req, res) => {
 //     try {
-//          const url = "https://api.petfinder.com/v2/animals"
-//          const response = await axios({
-//            method: "get",
-//            url: url,
-//            headers: {
-//              Authorization:
-//                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6ImE2MzJkNzI0N2Q5YmJlMDRkNWEwY2RmYzQzMzQ4MTJlMDQ1NTFkNTlhYzA2NDg3MTE1OTU5NmQ2MjE2MTBkZDEzNmQ1MjRiZjI3YzBjZGI1IiwiaWF0IjoxNjU0MDI0MDg3LCJuYmYiOjE2NTQwMjQwODcsImV4cCI6MTY1NDAyNzY4Nywic3ViIjoiIiwic2NvcGVzIjpbXX0.kLabvHArOjPCJKYh9iAHkBicNOLsc7dMmcYzuZYyDYYQfT2b_yqBA39ynilBpXxriKuCI7UW--Cg3P3X8I2rv3PZIiQxvjQDaVzvuiFB63KjoJ3_UAygqXAsWD56LGVciV8k-ZaD7ls1LVQVgpGh2sePlJsCxU_Q2jlU0cWYCla0R6YzPVnkQnFB47L_lyBufpp3KCuwQz7Zwh8xoKeO_3_ZkZP5GPtSUdqwJITn37YSgcd-H3iIbyDtFp-NM6si84GfpZGrwHfrjOhL-EBgowA9mlZcy-DDTGntkWRS18JWZVmSOiXXVERpWEQyt3IIp7wWDb1HJNFGtLPOZYHgKA",
-//            },
-//          });
-//         const animals = await response.data.animals
-//         res.render('users/favorites.ejs', {animals, user: res.locals.user})
+//         let pets = res.locals.user.getPets();
+//         console.log(pets);
+//         const foundUser = await db.user.findOne({
+//           where: { email: req.locals.email }
+//         })
+//         const favorites = await db.favorite.findAll()
+//         if (foundUser === req.locals.email){
+//             res.render("users/id.ejs", {animals:favorites})
+//         }
+     
 //     } catch (error) {
 //         console.log(error)
 //     }
+//     //where i want to put specific details about a pet 
+
 // })
+
+router.get("/favorites", async (req, res) => {
+  const favorites = await db.favorite.findAll()
+  res.render("users/favorites.ejs", {animals:favorites})
+})
+
+router.post('/favorites', async (req, res) => {
+    try {
+     if(!res.locals.user){
+         res.render('users/login', {msg: 'log in'})
+         return
+     }
+        const [pet, created] = await db.pet.findOrCreate({
+            where: {
+                id: req.body.id 
+            }
+        })
+        const user = await db.user.findByPk(res.locals.user.dataValues.id)
+        user.addPet(pet)
+        res.redirect("users/favorites.ejs"); 
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
+// router.delete('/favorites/:id', async (req, res) => {
+    
+// })
+
 
 
 

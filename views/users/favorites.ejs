@@ -2,12 +2,3 @@
 
 <h1>Here are your saved pets!</h1>
 
-<% animals.forEach(animal => { %>
-    <h2>Hello there, meet </h2><%= animal.name %>!</h2>
-    <img src= "<%= (animal.photos[0]) ? animal.photos[0].medium : 'null' %>"/>
-    <h2><%= animal.age %></h2>
-    <h2><%= animal.gender %></h2>
-    <h2><%= animal.breed %></h2>
-    <h2><%= animal.tags %></h2>
-    <h2><a href="<%= animal.url %>"><%= animal.url %></a></h2>
-<% }) %>
