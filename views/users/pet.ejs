@@ -3,11 +3,7 @@
 
 <h4>Here is where I am going to render the image page</h4>
 
-<form method="POST" action="/favorites">
-    <input hidden value="<%= animal.name %>" name="name"/>
-    <input hidden value="<%= animal.age %>" name="age"/>
-    <button type="submit">Favorite this Pet!</button>
-</form>
+
 
 <ul>
     <% animals.forEach(animal => { %>
@@ -16,6 +12,11 @@
          <a href="/users/pet/<%= animal.name %>"><%= animal.name %></a>
          <img src= "<%= (animal.photos[0]) ? animal.photos[0].medium : 'null' %>"/>
         </li>
+        <form method="POST" action="/favorites">
+         <input hidden value="<%= animal.name %>" name="name"/>
+        <input hidden value="<%= animal.age %>" name="age"/>
+        <button type="submit">Favorite this Pet!</button>
+</form>
   <% }) %>
 </ul>
 

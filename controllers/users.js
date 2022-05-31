@@ -115,6 +115,7 @@ router.post('/favorites', async (req, res) => {
     // const favorites =  await db.fave.findAll()
     await db.favorite.create({
       name: req.body.name,
+      age: req.body.age
     })
     res.redirect("users/favorites.ejs")
     // if rec.user.id === current user, do this 
