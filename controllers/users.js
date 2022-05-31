@@ -4,6 +4,7 @@ const db = require('../models')
 const cryptoJS = require('crypto-js')
 const bcrypt = require('bcryptjs')
 const { default: axios } = require('axios')
+const { append } = require('express/lib/response')
 //Get /users/new - renders a form to add new users
 router.get('/new',  (req, res) => {
     res.render('users/new.ejs', {msg: null})
@@ -95,24 +96,49 @@ router.get('/pet', async (req, res) => {
         url: url,
         headers: {
           Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjY4Y2NkN2RhNzZhNmMzMzA0Mzk4NGQyYzNiNGQ5MDE3OGUwNGI4NmMyZDM2YzgyODMwYWNlMTQ3OWE0YTFlYWM1MTMyMjE2MzhjNGJlNTFiIiwiaWF0IjoxNjUzOTY1MDcxLCJuYmYiOjE2NTM5NjUwNzEsImV4cCI6MTY1Mzk2ODY3MSwic3ViIjoiIiwic2NvcGVzIjpbXX0.xO8SbKRO-Ff8xSKVEKe-209JR0hE-yLb967bqIkCO5XhqiKXeBDGvNygMfmg_Fe9OhEDy9P1ssaQ00wQdEx0aK2YSnKGEnZbsPJqCAG8X8sNT2yaLajQHyUPcQ-BnxpmZVX-vzeXfDHCnvMbdRN5KGzOZToSP8lQynYgzKInQwlbn68hHQiPSVsxfPU1Yra668AH1EpwFGeLC7ugjE5rLx-i_CHR77_KBZYFmrpj5pOI0n83lJKM-qUK7cYnrXr35dvxoVR3JyCE7tcnMELnFZoMXTFRaTu8WWw8W736BUKdBkjV-leeBtgI_EBqGMEWOUbYlKkNVQj1rXDr7QdRFQ",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjdlZWFiOTcwZTBhM2M4ODk4YzMyMjQ1OGRiZmI1OTEzMmVlYzViYWE0MTliNTRmYTVhZDM5N2FmNTZiMmRkZWFlZTMzNDk1NTMyYTZiNzNhIiwiaWF0IjoxNjU0MDI5NjkwLCJuYmYiOjE2NTQwMjk2OTAsImV4cCI6MTY1NDAzMzI5MCwic3ViIjoiIiwic2NvcGVzIjpbXX0.rKkeJEf0djQtk5S3GoEuzgjhqORhNjCX_LhY8Bww3gYWCnqGBkrYRUyhE-yW89n3oOrFNmf4wC9kMpfzrsY51LhB50j1E_hnfP7oWJDKjhKDBOesWsPAqkM3LiR2MKaQb2XaneN8RTCQiG58ccqHjiTTMQ4coF9AW2ywQCevonNqunJUJX8iOqztCbRIXpk7pFi6r0WDo-gfHNzAjyOXW5McoS6RN5lxjr2OA8oi9EZe4Rqg7FxemLS0vkL0OTMvuwfceNNZSKW_4-oV_emnS05-YJoNYSETz3Qn06qUsLNFaH9l9EZcyEMrjjeQICsEPiQ7LWHEOKZ-2Jpr68baHQ",
         },
       });
       const animals = await response.data.animals
-    //   animals.forEach(animal => {
-    //     console.log(response.data.animals[1].photos[0].medium);
-    //   })
-
-
       res.render('users/pet.ejs', {animals, user: res.locals.user})
     } catch (error) {
         console.log(error)
     }
 })
 
-router.get('/favorites', (req, res) => {
-    res.render("users/favorites.ejs", { msg: null })
+router.get("/favorites", async (req, res) => {
+  const favorites = await db.favorite.findAll()
+  res.render("users/favorites.ejs", {animals:favorites})
+  // if rec.user.id === current user, do this
 })
+router.post('/favorites', async (req, res) => {
+    // const favorites =  await db.fave.findAll()
+    await db.favorite.create({
+      name: req.body.name,
+    })
+    res.redirect("users/favorites.ejs")
+    // if rec.user.id === current user, do this 
+})
+// router.get('/favorites', async (req, res)=> {
+//     try {
+//          const url = "https://api.petfinder.com/v2/animals"
+//          const response = await axios({
+//            method: "get",
+//            url: url,
+//            headers: {
+//              Authorization:
+//                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6ImE2MzJkNzI0N2Q5YmJlMDRkNWEwY2RmYzQzMzQ4MTJlMDQ1NTFkNTlhYzA2NDg3MTE1OTU5NmQ2MjE2MTBkZDEzNmQ1MjRiZjI3YzBjZGI1IiwiaWF0IjoxNjU0MDI0MDg3LCJuYmYiOjE2NTQwMjQwODcsImV4cCI6MTY1NDAyNzY4Nywic3ViIjoiIiwic2NvcGVzIjpbXX0.kLabvHArOjPCJKYh9iAHkBicNOLsc7dMmcYzuZYyDYYQfT2b_yqBA39ynilBpXxriKuCI7UW--Cg3P3X8I2rv3PZIiQxvjQDaVzvuiFB63KjoJ3_UAygqXAsWD56LGVciV8k-ZaD7ls1LVQVgpGh2sePlJsCxU_Q2jlU0cWYCla0R6YzPVnkQnFB47L_lyBufpp3KCuwQz7Zwh8xoKeO_3_ZkZP5GPtSUdqwJITn37YSgcd-H3iIbyDtFp-NM6si84GfpZGrwHfrjOhL-EBgowA9mlZcy-DDTGntkWRS18JWZVmSOiXXVERpWEQyt3IIp7wWDb1HJNFGtLPOZYHgKA",
+//            },
+//          });
+//         const animals = await response.data.animals
+//         res.render('users/favorites.ejs', {animals, user: res.locals.user})
+//     } catch (error) {
+//         console.log(error)
+//     }
+// })
+
+
+
 
 module.exports = router
 

@@ -3,12 +3,6 @@ const axios = require('axios')
 const testData = async () => {
     try {
         const url = "https://api.petfinder.com/v2/animals"
-        // const response = await axios.get(url, {
-        //   header: {
-        //     bearer: ""
-              
-        //   }
-        // })
         const response = await axios({
           method: "get",
           url: url,
