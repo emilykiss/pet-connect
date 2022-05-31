@@ -46,10 +46,10 @@ Route 4- After clicking on a pet from your favorites, you can view their informa
 - Very CSSified 
 
 ## RESTful Routing 
-![RESTful Routing](crud.png)
+![RESTful Routing](images/crud.png)
 
 ## Wireframes 
-![login](login.JPG)
-![home](home.JPG)
-![about](about.jpeg)
-![favorites](favorites.jpeg)
+![login](images/login.JPG)
+![home](images/home.JPG)
+![about](images/about.jpeg)
+![favorites](images/favorites.jpeg)

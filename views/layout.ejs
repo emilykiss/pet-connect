@@ -12,12 +12,17 @@
       <ul>
         <% if (user) { %>
           <li>
-            <a href="/users/profile">Profile</a>
+            <a href="/users/pet">Home</a>
           </li>
 
           <li>
             <a href="/users/logout">Logout</a>
           </li>
+
+          <li>
+            <a href="/users/favorites">Saved</a>
+          </li>
+
         <%}else {%>
             <li>
               <a href="/users/new">Sign up</a>

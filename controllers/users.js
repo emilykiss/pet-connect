@@ -3,6 +3,7 @@ const router = express.Router()
 const db = require('../models')
 const cryptoJS = require('crypto-js')
 const bcrypt = require('bcryptjs')
+const { default: axios } = require('axios')
 //Get /users/new - renders a form to add new users
 router.get('/new',  (req, res) => {
     res.render('users/new.ejs', {msg: null})
@@ -25,7 +26,7 @@ router.post('/', async (req, res) => {
             //TODO: encrypt ID 
             const encryptedId = cryptoJS.AES.encrypt(user.id.toString(), process.env.ENC_KEY).toString()
             res.cookie('userId', encryptedId)
-            res.redirect('users/profile')
+            res.redirect('users/pet')
         }else{
             // if the user was not created, re-render the login form with a message
             console.log('That email already exists')
@@ -61,8 +62,8 @@ router.post('/login', async (req, res) => {
         if (compare) {
             const encryptedId = cryptoJS.AES.encrypt(foundUser.id.toString(),process.env.ENC_KEY).toString();
             res.cookie("userId", encryptedId)
-            //Tedirect to profile instead of main page
-            res.redirect('user/profile')
+            //To direct to profile instead of main page
+            res.redirect('user/pet.ejs')
         } else {
             res.render('users/login.ejs', {msg})
         }
@@ -72,31 +73,45 @@ router.post('/login', async (req, res) => {
     }
 })
 // GET /users/logout -- clear the coookie to log the user out
-router.get('/logout', (req, res) => {
-    res.render("users/logout.ejs", { msg: null })
+
+router.get('/logout',  (req, res) => {
+   res.clearCookie("userId")
+   res.redirect('/')
+
 })
 
-router.post('/logout',  (req, res) => {
-    try {
-        const logout =  () => {
-            window.localStorage.clear()
-            window.location.reload(true)
-            window.location.replace('/')
-            
-        }
+router.get('/pet', async (req, res) => {
+     try {
+      //check if user is authorized
+      if (!res.locals.user) {
+        // if the user is not authorized, ask them to log in
+        res.render("users/login.ejs", { msg: "Please log in to continue" });
+        return; // end the route here
+      }
+      //this is where I am going to upload the images
+      const url = "https://api.petfinder.com/v2/animals";
+      const response = await axios({
+        method: "get",
+        url: url,
+        headers: {
+          Authorization:
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjY4Y2NkN2RhNzZhNmMzMzA0Mzk4NGQyYzNiNGQ5MDE3OGUwNGI4NmMyZDM2YzgyODMwYWNlMTQ3OWE0YTFlYWM1MTMyMjE2MzhjNGJlNTFiIiwiaWF0IjoxNjUzOTY1MDcxLCJuYmYiOjE2NTM5NjUwNzEsImV4cCI6MTY1Mzk2ODY3MSwic3ViIjoiIiwic2NvcGVzIjpbXX0.xO8SbKRO-Ff8xSKVEKe-209JR0hE-yLb967bqIkCO5XhqiKXeBDGvNygMfmg_Fe9OhEDy9P1ssaQ00wQdEx0aK2YSnKGEnZbsPJqCAG8X8sNT2yaLajQHyUPcQ-BnxpmZVX-vzeXfDHCnvMbdRN5KGzOZToSP8lQynYgzKInQwlbn68hHQiPSVsxfPU1Yra668AH1EpwFGeLC7ugjE5rLx-i_CHR77_KBZYFmrpj5pOI0n83lJKM-qUK7cYnrXr35dvxoVR3JyCE7tcnMELnFZoMXTFRaTu8WWw8W736BUKdBkjV-leeBtgI_EBqGMEWOUbYlKkNVQj1rXDr7QdRFQ",
+        },
+      });
+      const animals = await response.data.animals
+    //   animals.forEach(animal => {
+    //     console.log(response.data.animals[1].photos[0].medium);
+    //   })
+
+
+      res.render('users/pet.ejs', {animals, user: res.locals.user})
     } catch (error) {
         console.log(error)
     }
 })
 
-router.get('/profile', (req, res) => {
-    //check if user is authorized
-    if(!res.locals.user) {
-        // if the user is not authorized, ask them to log in
-        res.render('users/login.ejs', { msg: 'Please log in to continue'})
-        return // end the route here
-    }
-    res.render('users/profile', { user: res.locals.user })
+router.get('/favorites', (req, res) => {
+    res.render("users/favorites.ejs", { msg: null })
 })
 
 module.exports = router

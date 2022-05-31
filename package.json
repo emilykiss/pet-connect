@@ -22,5 +22,8 @@
     "pg": "^8.5.1",
     "rowdy-logger": "^1.0.2",
     "sequelize": "^6.5.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.0.24"
   }
 }

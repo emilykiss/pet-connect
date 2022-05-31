@@ -60,20 +60,11 @@ app.use('/users', require('./controllers/users'))
 
 
 
-
-
-
-
-
-
-
-
-
 // Error handling middlewar - 404 error MUST be at the bottom  of the page
-app.use((req, res, next) => {
-// Render the error here
-res.status(404).render('404.ejs')
-})
+// app.use((req, res, next) => {
+// // Render the error here
+// res.status(404).render('404.ejs')
+// })
 
 // 500 error handler
 app.use((error, req, res, next) => {
