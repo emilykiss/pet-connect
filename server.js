@@ -37,7 +37,7 @@ app.use(async (req, res, next) => {
     if (req.cookies.userId) {
       const userId = req.cookies.userId;
       const decryptedId = cryptoJS.AES.decrypt(userId, process.env.ENC_KEY).toString(cryptoJS.enc.Utf8)
-      const user = await db.user.findByPk(decryptedId)
+      const user = await db.user.findByPk(decryptedId, {include:[db.comment]})
       res.locals.user = user;
     } else {
       //the user is explicitly not logged in

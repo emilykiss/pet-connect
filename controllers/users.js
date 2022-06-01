@@ -96,7 +96,7 @@ router.get('/pet', async (req, res) => {
         url: url,
         headers: {
           Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjBmNDIwZjlhNjk3ODFlOTc0YjFlZWIxODE1M2M2ZTc4N2IzM2Q2YjFkNWQ1YTcxMDAyZmU2Y2Y4NWEyZmIzYjNmNzMzMjVhMmQ2YTljOTcwIiwiaWF0IjoxNjU0MTA0ODQ5LCJuYmYiOjE2NTQxMDQ4NDksImV4cCI6MTY1NDEwODQ0OSwic3ViIjoiIiwic2NvcGVzIjpbXX0.PzDQnGvF1P3l-iq9NZIeJIzCwtbWAtcWEeWHxHGca2QKsoukCzPzZcu_mHvcE2I9ePQJUobw8ulIZq-wHWYJZ7fc1vQEyh5jSPmKy5SJ7rdnl1ckyADFVAqXOpB1gz4KjFgqxgXmimJ0LVMyyII7Flp03HYi9Bo__0ogNwAFWR89koPQUwmu8bm7j6AEGYyBNCxYYRpJ-Ynlxmg1VCO080y-WufztNF5cMGZNIBe8r20M4Zig1WuH8rvyvbWHk7VESfujnEz3AgKMzYx0DRz-3LLH9RnP99oIRhSlmIReN6TcG-8zZ0ALhjWCAuheSzmg3HIglzP7iurKHptwYnRQw",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjE0ZjY0NjE4NzA1NWE2ZWU4NDlhN2E5NDdkYmU1N2YxM2NlYThiMjZiNTBjZDZlYTY3NTY4Y2FmYzExOGUxYWZhYmNjYzg3YjRiNGVkYWU0IiwiaWF0IjoxNjU0MTE0MDQ4LCJuYmYiOjE2NTQxMTQwNDgsImV4cCI6MTY1NDExNzY0OCwic3ViIjoiIiwic2NvcGVzIjpbXX0.eM_-DiLxh3dLVMQywygvNm9FIwy1V0ss6PkJ7WaT81VosZES4HQlUyVzaqb0hUcC4U8FCegRgp4y86vOwPu4ytjeWigTP0SUlonG60_8UwIOn6sLf0VoBpaVdp-vftEf_h4CFARIWrTfpkjMB2Fu97xJJojTgHdJip1huMGTJ3nE9xIDO594f-9EeYzqXs4ARE7GsmPuXD23GNmlQpqtDCxxiRs4IDlydfLgcM_p9QYt1TxQJHxDfHiimnudzxr97i7Ay4osbWWRKiscQgZLRHl57CVMHV_oc-MC8MV-3sm-w4YHCwIKFjPeBcMT7iE-_CFY5LFT9TzikLJPMRmG0w",
         },
       });
       const animals = await response.data.animals
@@ -158,9 +158,29 @@ router.delete('/favorites', async (req, res) => {
   }
 })
 
+router.get('/profile', async (req, res) => {
+    try {
+        console.log(res.locals.user)
+        if (!res.locals.user) {
+          res.render("users/login.ejs", { msg: "Please log in to continue" })
+          return
+        }
+        res.render('users/profile.ejs', {comments:res.locals.user.comments})
+    } catch (error) {
+        console.log(error)
+    }
+})
 
-// router.put('/favorites', async (req, res) => {
+router.post('/profile', async (req, res) => {
+    console.log(req.body.content)
+    await db.comment.create({
+      content: req.body.content,
+      userId: res.locals.user.id
+    })
+})
 
+// router.put('/profile', async (req, res) => {
+// edit a comment here
 // })
 
 

@@ -1,0 +1,35 @@
+<h1>Profile</h1>
+
+<h2>About Me:</h2>
+<form method="POST" action="/users/profile">
+  <label for="post"></label>
+  <input type="text" name="content" id="comment" />
+  <button type="submit">Post</button>
+</form>
+
+
+
+<h2>Interested In:</h2>
+<form method="POST" action="/users/profile">
+  <label for="post"></label>
+  <input type="text" name="content" id="comment" />
+  <button type="submit">Post</button>
+</form>
+
+<h2>Located In:</h2>
+<form method="POST" action="/users/profile">
+  <label for="post"></label>
+  <input type="text" name="content" id="comment" />
+  <button type="submit">Post</button>
+</form>
+
+<h3><%= user.content %></h3>
+
+<style>
+  * {
+    background-color: pink;
+  }
+  h1, h2 {
+    color: hotpink;
+  }
+</style>
