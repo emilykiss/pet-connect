@@ -96,7 +96,7 @@ router.get('/pet', async (req, res) => {
         url: url,
         headers: {
           Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjRlYjFkOWQ0MTA0YWNlMDdiNDY1ZDE1YTI0YTYzN2MyZmQ0NjlhZmJmMzJjMWYxMjg4YWY5MWU0ZTQzMmU1NzUwNTEzNzgxN2Y1ZjI1MGRkIiwiaWF0IjoxNjU0MDM3NjMwLCJuYmYiOjE2NTQwMzc2MzAsImV4cCI6MTY1NDA0MTIzMCwic3ViIjoiIiwic2NvcGVzIjpbXX0.yRZxVCxvTrbqrydCwX8QpjHWj9cLSBwFaWi0rpKtOqpOX9MHqnp-If8VhRGpBAJftTyVYtvQbyaSyO_0cg9X5YwX0_FZ4IEsDruae5eeOhOL5eIX4uFdV2SdKOTTZxWzhJZTJxvoF_ysZwlfTxVr9EGyIFq4B5HHHdUXu3D2vizLMw1q6TQfyXBwd0lEYxEHryhMoz5L2g5k3b9l6dflbleyMDWoOlJMecBZlmKM7IPWG3QsDN5ju8NR405YwdgDNMH5p3C5zFWfVjFrEch2GQleXIkehtvU1PvOZ8bgezyCwjlXmvw6IeLIePaj2XqU9XAS4O-8GBrYiogVEYfcPA",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6ImVjY2IyYzZmMmQ4NDk4MTBkNzFiMDdlY2E4ZGZhYjBhM2U1OTAxNzhiN2ZlMzU5N2NhZmFkNGNjNTI5MGM2YWVjODdiNGMwZTllZmY1NjRhIiwiaWF0IjoxNjU0MDQ1MjE4LCJuYmYiOjE2NTQwNDUyMTgsImV4cCI6MTY1NDA0ODgxOCwic3ViIjoiIiwic2NvcGVzIjpbXX0.B7dwPChCuFb-ctEce3Vzib_nyd1vP0SfMTMTCT8c74rq_tmtf4EaprpI-qbeG38gyTKqSXussZzXqBq12EpzFo7vdvWpdQ15Mw5p6h1wkYgkcVYmcBoamgPZKSiFmlUAEKPjoCzJ0iXh9rkOY7vjecMUC5bZyfEHs2c7_kDZPvhQZvphJY9KcrNWb4f2K8ld9BBFDUNnwfKyKzPIJL8nIAQI6g9Pqg1J0Nvs9cxfiKpBUodMMD0hKcHUvjs9RgPkRCYGnBYytaewXtivcHXCVtFpR4Z1dzYqoLClM_qF6bNXgCin5WPg1NW_AXxPx7W7K4uIezz5ebw8cf3ZrVRzDg",
         },
       });
       const animals = await response.data.animals
@@ -107,44 +107,44 @@ router.get('/pet', async (req, res) => {
 })
 
 
-// router.get("/favorites", async (req, res) => {
-//     try {
-//         let pets = res.locals.user.getPets();
-//         console.log(pets);
-//         const foundUser = await db.user.findOne({
-//           where: { email: req.locals.email }
-//         })
-//         const favorites = await db.favorite.findAll()
-//         if (foundUser === req.locals.email){
-//             res.render("users/id.ejs", {animals:favorites})
-//         }
-     
-//     } catch (error) {
-//         console.log(error)
-//     }
-//     //where i want to put specific details about a pet 
-
-// })
-
 router.get("/favorites", async (req, res) => {
   const favorites = await db.favorite.findAll()
+  // query for the user based on the cookie 
+  // include db.pet
+  // pass that object
   res.render("users/favorites.ejs", {animals:favorites})
 })
 
 router.post('/favorites', async (req, res) => {
     try {
+        const url = "https://api.petfinder.com/v2/animals";
+        const response = await axios({
+          method: "get",
+          url: url,
+          headers: {
+            Authorization:
+              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6ImVjY2IyYzZmMmQ4NDk4MTBkNzFiMDdlY2E4ZGZhYjBhM2U1OTAxNzhiN2ZlMzU5N2NhZmFkNGNjNTI5MGM2YWVjODdiNGMwZTllZmY1NjRhIiwiaWF0IjoxNjU0MDQ1MjE4LCJuYmYiOjE2NTQwNDUyMTgsImV4cCI6MTY1NDA0ODgxOCwic3ViIjoiIiwic2NvcGVzIjpbXX0.B7dwPChCuFb-ctEce3Vzib_nyd1vP0SfMTMTCT8c74rq_tmtf4EaprpI-qbeG38gyTKqSXussZzXqBq12EpzFo7vdvWpdQ15Mw5p6h1wkYgkcVYmcBoamgPZKSiFmlUAEKPjoCzJ0iXh9rkOY7vjecMUC5bZyfEHs2c7_kDZPvhQZvphJY9KcrNWb4f2K8ld9BBFDUNnwfKyKzPIJL8nIAQI6g9Pqg1J0Nvs9cxfiKpBUodMMD0hKcHUvjs9RgPkRCYGnBYytaewXtivcHXCVtFpR4Z1dzYqoLClM_qF6bNXgCin5WPg1NW_AXxPx7W7K4uIezz5ebw8cf3ZrVRzDg",
+          },
+        });
+        const animals = await response.data.animals
      if(!res.locals.user){
          res.render('users/login', {msg: 'log in'})
          return
      }
+        const user = await db.user.findByPk(res.locals.user.dataValues.id)
         const [pet, created] = await db.pet.findOrCreate({
             where: {
-                id: req.body.id 
+                name: req.body.name
+            }, defaults: {
+                age: req.body.age,
+                url: req.body.photos,
+
             }
         })
-        const user = await db.user.findByPk(res.locals.user.dataValues.id)
-        user.addPet(pet)
-        res.redirect("users/favorites.ejs"); 
+        await user.addPet(pet)
+        const allFavorites = await db.pet.findAll()
+        console.log(allFavorites[0].dataValues)
+        res.render("users/favorites", {allFavorites}); 
     } catch (error) {
         console.log(error)
     }
@@ -154,9 +154,6 @@ router.post('/favorites', async (req, res) => {
 // router.delete('/favorites/:id', async (req, res) => {
     
 // })
-
-
-
 
 
 module.exports = router

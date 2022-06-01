@@ -2,3 +2,8 @@
 
 <h1>Here are your saved pets!</h1>
 
+<% allFavorites.forEach(animal => { %>
+    <h2>Hello there, meet <%= animal.dataValues.name %>!</h2>
+    <img src= "<%= animal.dataValues.url %>"/>
+    <h2><%= animal.dataValues.age %></h2>
+<% }) %>
