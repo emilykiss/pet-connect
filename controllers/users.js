@@ -96,7 +96,7 @@ router.get('/pet', async (req, res) => {
         url: url,
         headers: {
           Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6ImVjY2IyYzZmMmQ4NDk4MTBkNzFiMDdlY2E4ZGZhYjBhM2U1OTAxNzhiN2ZlMzU5N2NhZmFkNGNjNTI5MGM2YWVjODdiNGMwZTllZmY1NjRhIiwiaWF0IjoxNjU0MDQ1MjE4LCJuYmYiOjE2NTQwNDUyMTgsImV4cCI6MTY1NDA0ODgxOCwic3ViIjoiIiwic2NvcGVzIjpbXX0.B7dwPChCuFb-ctEce3Vzib_nyd1vP0SfMTMTCT8c74rq_tmtf4EaprpI-qbeG38gyTKqSXussZzXqBq12EpzFo7vdvWpdQ15Mw5p6h1wkYgkcVYmcBoamgPZKSiFmlUAEKPjoCzJ0iXh9rkOY7vjecMUC5bZyfEHs2c7_kDZPvhQZvphJY9KcrNWb4f2K8ld9BBFDUNnwfKyKzPIJL8nIAQI6g9Pqg1J0Nvs9cxfiKpBUodMMD0hKcHUvjs9RgPkRCYGnBYytaewXtivcHXCVtFpR4Z1dzYqoLClM_qF6bNXgCin5WPg1NW_AXxPx7W7K4uIezz5ebw8cf3ZrVRzDg",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjBmNDIwZjlhNjk3ODFlOTc0YjFlZWIxODE1M2M2ZTc4N2IzM2Q2YjFkNWQ1YTcxMDAyZmU2Y2Y4NWEyZmIzYjNmNzMzMjVhMmQ2YTljOTcwIiwiaWF0IjoxNjU0MTA0ODQ5LCJuYmYiOjE2NTQxMDQ4NDksImV4cCI6MTY1NDEwODQ0OSwic3ViIjoiIiwic2NvcGVzIjpbXX0.PzDQnGvF1P3l-iq9NZIeJIzCwtbWAtcWEeWHxHGca2QKsoukCzPzZcu_mHvcE2I9ePQJUobw8ulIZq-wHWYJZ7fc1vQEyh5jSPmKy5SJ7rdnl1ckyADFVAqXOpB1gz4KjFgqxgXmimJ0LVMyyII7Flp03HYi9Bo__0ogNwAFWR89koPQUwmu8bm7j6AEGYyBNCxYYRpJ-Ynlxmg1VCO080y-WufztNF5cMGZNIBe8r20M4Zig1WuH8rvyvbWHk7VESfujnEz3AgKMzYx0DRz-3LLH9RnP99oIRhSlmIReN6TcG-8zZ0ALhjWCAuheSzmg3HIglzP7iurKHptwYnRQw",
         },
       });
       const animals = await response.data.animals
@@ -108,25 +108,17 @@ router.get('/pet', async (req, res) => {
 
 
 router.get("/favorites", async (req, res) => {
-  const favorites = await db.favorite.findAll()
+  const favorites = await db.pet.findAll()
+  console.log("KJDFBFVNQEFKNVKLKNNLK", favorites)
   // query for the user based on the cookie 
   // include db.pet
   // pass that object
-  res.render("users/favorites.ejs", {animals:favorites})
+  res.render("users/favorites.ejs", {allFavorites:favorites})
 })
 
 router.post('/favorites', async (req, res) => {
     try {
-        const url = "https://api.petfinder.com/v2/animals";
-        const response = await axios({
-          method: "get",
-          url: url,
-          headers: {
-            Authorization:
-              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6ImVjY2IyYzZmMmQ4NDk4MTBkNzFiMDdlY2E4ZGZhYjBhM2U1OTAxNzhiN2ZlMzU5N2NhZmFkNGNjNTI5MGM2YWVjODdiNGMwZTllZmY1NjRhIiwiaWF0IjoxNjU0MDQ1MjE4LCJuYmYiOjE2NTQwNDUyMTgsImV4cCI6MTY1NDA0ODgxOCwic3ViIjoiIiwic2NvcGVzIjpbXX0.B7dwPChCuFb-ctEce3Vzib_nyd1vP0SfMTMTCT8c74rq_tmtf4EaprpI-qbeG38gyTKqSXussZzXqBq12EpzFo7vdvWpdQ15Mw5p6h1wkYgkcVYmcBoamgPZKSiFmlUAEKPjoCzJ0iXh9rkOY7vjecMUC5bZyfEHs2c7_kDZPvhQZvphJY9KcrNWb4f2K8ld9BBFDUNnwfKyKzPIJL8nIAQI6g9Pqg1J0Nvs9cxfiKpBUodMMD0hKcHUvjs9RgPkRCYGnBYytaewXtivcHXCVtFpR4Z1dzYqoLClM_qF6bNXgCin5WPg1NW_AXxPx7W7K4uIezz5ebw8cf3ZrVRzDg",
-          },
-        });
-        const animals = await response.data.animals
+       
      if(!res.locals.user){
          res.render('users/login', {msg: 'log in'})
          return
@@ -143,16 +135,32 @@ router.post('/favorites', async (req, res) => {
         })
         await user.addPet(pet)
         const allFavorites = await db.pet.findAll()
-        console.log(allFavorites[0].dataValues)
-        res.render("users/favorites", {allFavorites}); 
+        res.render("users/favorites", {allFavorites})
     } catch (error) {
         console.log(error)
     }
 })
 
 
-// router.delete('/favorites/:id', async (req, res) => {
-    
+router.delete('/favorites', async (req, res) => {
+    console.log(req.body.id)
+    try {
+        const instance = await db.pet.findOne({
+        where: {
+            id: req.body.id
+        }
+    })
+    console.log(instance)
+    await instance.destroy()
+    res.redirect('/users/favorites')
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+
+// router.put('/favorites', async (req, res) => {
+
 // })
 
 

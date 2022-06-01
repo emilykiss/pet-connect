@@ -1,19 +1,49 @@
 
-<h3>Find your forever match, <%= user.email %>!💋</h3>
+<h3>Find your forever match!💋</h3>
 
 <ul>
     <% animals.forEach(animal => { %>
        <% console.log("animal", animal)%>
        <li>
-         <a href="/users/pet/<%= animal.name %>"><%= animal.name %></a>
+         <h1><%= animal.name %></h1>
          <img src= "<%= (animal.photos[0]) ? animal.photos[0].medium : 'null' %>"/>
-        </li>
-        <form method="POST" action="/users/favorites">
+      </li>
+        <form id="form" method="POST" action="/users/favorites">
          <input hidden value="<%= animal.name %>" name="name"/>
          <input hidden value="<%= animal.age %>" name="age"/>
-         <input hidden value="<%= animal.photos[0].medium %>" name="photos"/>
-         <button type="submit">Save this Pet!</button>
+         <input hidden value="<%= animal.photos.medium %>" name="photos"/>
+         <button type="submit">Save <%= animal.name %> to your favorites! </button>
       </form>
   <% }) %>
 </ul>
 
+<style>
+  * {
+    background-color: pink;
+  }
+  #form {
+    color: hotpink;
+    display: flex;
+    font-family: sans-serif;
+    margin: 20px;
+    font-size: 30px;
+  }
+
+  h1 {
+    color: hotpink;
+    display: flex;
+    font-family: sans-serif;
+    margin: 20px;
+    font-size: 20px;
+   
+  }
+
+  h3 {
+    color: hotpink;
+    display: flex;
+     font-family: sans-serif;
+    margin: 20px;
+    font-size: 50px;
+  }
+
+</style>
