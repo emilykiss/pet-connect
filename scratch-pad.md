@@ -22,7 +22,7 @@ content: VARCHAR(255)
 userId: INTEGER
 petId: INTEGER
 
-sequelize model:create --name comment --attributes content:string,userId:integer,petId:integer
+sequelize model:create --name comment --attributes content:string,userId:integer
 
 table: favorites
 

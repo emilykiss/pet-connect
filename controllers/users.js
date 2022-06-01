@@ -86,7 +86,7 @@ router.get('/pet', async (req, res) => {
       //check if user is authorized
       if (!res.locals.user) {
         // if the user is not authorized, ask them to log in
-        res.render("users/login.ejs", { msg: "Please log in to continue" });
+        res.render("users/login.ejs", { msg: "Your new best friend is waiting for you. Log in to connect:" });
         return; // end the route here
       }
       //this is where I am going to upload the images
@@ -96,7 +96,7 @@ router.get('/pet', async (req, res) => {
         url: url,
         headers: {
           Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjE0ZjY0NjE4NzA1NWE2ZWU4NDlhN2E5NDdkYmU1N2YxM2NlYThiMjZiNTBjZDZlYTY3NTY4Y2FmYzExOGUxYWZhYmNjYzg3YjRiNGVkYWU0IiwiaWF0IjoxNjU0MTE0MDQ4LCJuYmYiOjE2NTQxMTQwNDgsImV4cCI6MTY1NDExNzY0OCwic3ViIjoiIiwic2NvcGVzIjpbXX0.eM_-DiLxh3dLVMQywygvNm9FIwy1V0ss6PkJ7WaT81VosZES4HQlUyVzaqb0hUcC4U8FCegRgp4y86vOwPu4ytjeWigTP0SUlonG60_8UwIOn6sLf0VoBpaVdp-vftEf_h4CFARIWrTfpkjMB2Fu97xJJojTgHdJip1huMGTJ3nE9xIDO594f-9EeYzqXs4ARE7GsmPuXD23GNmlQpqtDCxxiRs4IDlydfLgcM_p9QYt1TxQJHxDfHiimnudzxr97i7Ay4osbWWRKiscQgZLRHl57CVMHV_oc-MC8MV-3sm-w4YHCwIKFjPeBcMT7iE-_CFY5LFT9TzikLJPMRmG0w",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjYzNWY0MjdmMDE3OTA5YjgzZGFhZjIzNWRiODdmNWYxNjg2OGY0NzU4OTNhZmM5MzA0NWM2ODNiOTU5MTNkMjJjNDgwYjAyM2E4YTE2NWNhIiwiaWF0IjoxNjU0MTI0MjY4LCJuYmYiOjE2NTQxMjQyNjgsImV4cCI6MTY1NDEyNzg2OCwic3ViIjoiIiwic2NvcGVzIjpbXX0.oc8L50M-iqCuKkvacDY5eVOPNQcFQAZ6K7bDOzpFuRnuhjhaF4KqH5_qZ0lergFiOMvH6ggf-5xW-9a5eFxMW0R9NVCj66QFAWj3AidEr4SjMh3YzHkS38E18G2tqj9TMTCaH2SzTv0PcrpNxJ1o7FplNzGgBsSTDJLoNUHnuvvOQhG-UIztFw5ualTn39LEcIQkd-3GGlROTtWxKnGcPe7PdQiq8nVs9IQpU3_LR3A70lZDnFeSGESIHccFmlMh0WooGWu62ZiKiTSO-UNn5WXg_JtFSBtJ-t-SyboLnYJ0W7Ry4XHQxd98c_kcd4jvCP7_IxjjOuBF9vB_fyohHQ",
         },
       });
       const animals = await response.data.animals
@@ -160,28 +160,40 @@ router.delete('/favorites', async (req, res) => {
 
 router.get('/profile', async (req, res) => {
     try {
-        console.log(res.locals.user)
         if (!res.locals.user) {
           res.render("users/login.ejs", { msg: "Please log in to continue" })
           return
         }
-        res.render('users/profile.ejs', {comments:res.locals.user.comments})
+        const comments = await db.comment.findAll({
+            where: {
+                userId: res.locals.user.dataValues.id
+            }
+        })
+        res.render('users/profile.ejs', {comments, users:res.locals.user})
     } catch (error) {
         console.log(error)
     }
 })
 
 router.post('/profile', async (req, res) => {
-    console.log(req.body.content)
     await db.comment.create({
       content: req.body.content,
-      userId: res.locals.user.id
+      userId: req.body.userId
     })
+    res.redirect('/users/profile')
 })
 
-// router.put('/profile', async (req, res) => {
-// edit a comment here
-// })
+router.put('/profile', async (req, res) => {
+try {
+    await db.comment.update({
+      content: req.body.content,
+      userId: req.body.userId,
+    })
+    res.redirect("/users/profile")
+} catch (error) {
+    console.log(error)
+}
+})
 
 
 module.exports = router

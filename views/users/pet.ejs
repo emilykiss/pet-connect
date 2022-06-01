@@ -10,8 +10,8 @@
       </li>
         <form id="form" method="POST" action="/users/favorites">
          <input hidden value="<%= animal.name %>" name="name"/>
-         <input hidden value="<%= animal.age %>" name="age"/>
          <input hidden value="<%= animal.photos.medium %>" name="photos"/>
+         <input hidden value="<%= animal.age %>" name="age"/>
          <button type="submit">Save <%= animal.name %> to your favorites! </button>
       </form>
   <% }) %>

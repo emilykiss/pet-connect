@@ -23,6 +23,10 @@
             <a href="/users/profile">Profile</a>
           </li>
 
+          <li>
+            <a href="/users/favorites">Favorites</a>
+          </li>
+
         <%}else {%>
             <li>
               <a href="/users/new">Sign up</a>
@@ -40,6 +44,17 @@
     <style>
       ul {
         list-style: none;
+        font-family: sans-serif;
+      }
+      a:link, a:visited {
+        color: hotpink;
+        text-decoration: none;
+      }
+      a:hover{
+        color:white;
+      }
+      a:active {
+        color: chartreuse;
       }
     </style>
     <main>

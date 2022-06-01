@@ -14,9 +14,6 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER
       },
-      petId: {
-        type: Sequelize.INTEGER
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -12,13 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.comment.belongsTo(models.user)
-      models.comment.belongsTo(models.pet)
     }
   }
   comment.init({
     content: DataTypes.STRING,
-    userId: DataTypes.INTEGER,
-    petId: DataTypes.INTEGER
+    userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'comment',

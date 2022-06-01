@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.pet.belongsToMany(models.user, {through: 'pet_users'})
-      models.pet.hasMany(models.comment)
     }
   }
   pet.init({
