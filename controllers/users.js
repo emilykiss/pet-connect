@@ -5,6 +5,7 @@ const cryptoJS = require('crypto-js')
 const bcrypt = require('bcryptjs')
 const { default: axios } = require('axios')
 const { append } = require('express/lib/response')
+const accessToken = require('../test.js')
 //Get /users/new - renders a form to add new users
 router.get('/new',  (req, res) => {
     res.render('users/new.ejs', {msg: null})
@@ -82,6 +83,7 @@ router.get('/logout',  (req, res) => {
 
 router.get('/pet', async (req, res) => {
      try {
+         const header = await accessToken()
       //check if user is authorized
       if (!res.locals.user) {
         // if the user is not authorized, ask them to log in
@@ -95,7 +97,7 @@ router.get('/pet', async (req, res) => {
         url: url,
         headers: {
           Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjgyZTg1ZjdlYTgwM2Q0OTgxYWQ3ZjMyYjYzNWNlMWUyOWY1OWVhN2ZjNmZjNWNmYWUzNzIxMTU0YjY4NDY3M2IxMmY2NmU1NDU2OTQ1ZTMzIiwiaWF0IjoxNjU0MjAyMzcwLCJuYmYiOjE2NTQyMDIzNzAsImV4cCI6MTY1NDIwNTk3MCwic3ViIjoiIiwic2NvcGVzIjpbXX0.CZifLseINAVq2q-Y_I5dvR0z5WnTX1sjM06gvQJdXWqvt_3FDir5zzmrOI3k26ybDWp28Nv41NR5KlBQg5obYqyvA7vUT-upQp-AJbI4Z_jWXs1qGvY8jEOpLlCxqHJtJ2U0UhfRnqBMIMdhjOssfZaNDvD1xrKjal5M675GPLwcQ1GeXWykNSiILNESpSkMyuDv_FjYLxVHEpcy3yNNMaIOXaqvo6GC65qzDQvZeYu4CyWbAi18Sp4oaNPQaKhaE70XHnwiNwDU0RTCPgWnaqiXPUViqWZ45qWLMxOSoOqFcxxpNaxS0ozXVhsa48dsTBBX9KBRJOOqunXwjqn_AQ",
+            header,
         },
       });
       const animals = await response.data.animals
