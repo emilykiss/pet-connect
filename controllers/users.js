@@ -77,7 +77,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/logout',  (req, res) => {
    res.clearCookie("userId")
-   res.redirect('/')
+   res.redirect('/users/login')
 
 })
 
@@ -96,7 +96,7 @@ router.get('/pet', async (req, res) => {
         url: url,
         headers: {
           Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjYzNWY0MjdmMDE3OTA5YjgzZGFhZjIzNWRiODdmNWYxNjg2OGY0NzU4OTNhZmM5MzA0NWM2ODNiOTU5MTNkMjJjNDgwYjAyM2E4YTE2NWNhIiwiaWF0IjoxNjU0MTI0MjY4LCJuYmYiOjE2NTQxMjQyNjgsImV4cCI6MTY1NDEyNzg2OCwic3ViIjoiIiwic2NvcGVzIjpbXX0.oc8L50M-iqCuKkvacDY5eVOPNQcFQAZ6K7bDOzpFuRnuhjhaF4KqH5_qZ0lergFiOMvH6ggf-5xW-9a5eFxMW0R9NVCj66QFAWj3AidEr4SjMh3YzHkS38E18G2tqj9TMTCaH2SzTv0PcrpNxJ1o7FplNzGgBsSTDJLoNUHnuvvOQhG-UIztFw5ualTn39LEcIQkd-3GGlROTtWxKnGcPe7PdQiq8nVs9IQpU3_LR3A70lZDnFeSGESIHccFmlMh0WooGWu62ZiKiTSO-UNn5WXg_JtFSBtJ-t-SyboLnYJ0W7Ry4XHQxd98c_kcd4jvCP7_IxjjOuBF9vB_fyohHQ",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjhmNmRmNTRkMTMyY2I2M2QyMzRiZTJiZGJlMDgxNTQ3ZTVlOTE5YzJmMmViODU0YzE1Nzg5YTVkYjcxY2I0YzM5NDhlNDRlODRhNDk5YWY3IiwiaWF0IjoxNjU0MTk0Mjk3LCJuYmYiOjE2NTQxOTQyOTcsImV4cCI6MTY1NDE5Nzg5Nywic3ViIjoiIiwic2NvcGVzIjpbXX0.T1cFvMkwD1LHkIaEsBbUc-fEfz1YmecJKRyRMzv_UwL8e-bq_JoH5iERB1be6wyBTxz0Mla3aNmIagayb5Kmf0UwkS1d21Wb19MWGKfgVhEZ7D5ucEkr0Um06SopRr1yNPWDyyfWN7K97L8bkD003lqjyxbSLNSZnzZfgxmHnaRx5D3WRcneDgzhT3GMKOYkj_FVOCTZMo2e9vApIDKP7MsbrDgNA8lmS0QDYHrhoEO3xyyDPcs_pFfvwpkxoYczdP9KVsaDNWgXFyRPEc04lQe9vU5nKoX1VQDyYBcfng40S0tHROYvSf3OeZ5Mjr6VxhxCqBkRzs-UbFpSsAEs6Q",
         },
       });
       const animals = await response.data.animals
@@ -183,11 +183,36 @@ router.post('/profile', async (req, res) => {
     res.redirect('/users/profile')
 })
 
-router.put('/profile', async (req, res) => {
+router.get('/editprofile/:id', async (req, res) => {
+    
+    if (!res.locals.user) {
+      res.render("users/login.ejs", { msg: "Please log in to continue" })
+      return
+    }
+    try {
+        const comment = await db.comment.findOne({
+          where: {
+            id: req.params.id
+          },
+        })
+        res.render('users/editprofile', {comment})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+router.put('/editprofile/:id', async (req, res) => {
 try {
-    await db.comment.update({
-      content: req.body.content,
-      userId: req.body.userId,
+    if (!res.locals.user) {
+      res.render("users/login.ejs", { msg: "Please log in to continue" });
+      return;
+    }
+    const comment = await db.comment.update({
+       content: req.body.edit
+      }, {
+        where: {
+           id: req.params.id
+      }
     })
     res.redirect("/users/profile")
 } catch (error) {

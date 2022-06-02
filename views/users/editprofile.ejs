@@ -1,0 +1,9 @@
+<h1>I am the edit profile page</h1>
+
+ <h3><%= comment.content %></h3>
+
+<form method="POST" action="/users/editprofile/<%= comment.id %>?_method=PUT">
+     <label for="edit"></label>
+     <input type="text" id="edit" name="edit" value="<%= comment.content %>" required/>
+     <button type="submit">Submit</button>
+ </form>

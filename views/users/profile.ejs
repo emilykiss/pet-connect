@@ -12,7 +12,7 @@
 <div>
 <% comments.forEach(comment => { %>
     <h3><%= comment.content %></h3>
-    <button type="submit">Edit</button>
+    <a href="/users/editprofile/<%= comment.id %>">Edit</a>
     <% }) %>
 </div>
 
