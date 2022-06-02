@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
         const hashedPassword = bcrypt.hashSync(req.body.password, 12)
         const [user, created] = await db.user.findOrCreate({
             where: {email: req.body.email },
-            defaults: {password: req.body.password}
+            defaults: {password: hashedPassword}
         })
         // if the user is new, log them in by giving them a cookie and redirect to the homepage(in the future this could redirect to profile etc.)
         if (created) {
@@ -30,8 +30,7 @@ router.post('/', async (req, res) => {
             res.redirect('users/pet')
         }else{
             // if the user was not created, re-render the login form with a message
-            console.log('That email already exists')
-            res.render('users/new.ejs', {msg: 'The email exists in the database already...'})
+            res.render('users/new.ejs', {msg: 'The email exists in the database already... Sus.'})
         }
 
     } catch (err) {
@@ -50,7 +49,7 @@ router.post('/login', async (req, res) => {
         const foundUser = await db.user.findOne({
             where: { email: req.body.email }
         })
-        const msg = 'You are not authenticated.'
+        const msg = 'Your email is not recognized, try again...'
         if (!foundUser) {
             console.log('email not found')
             res.render('users/login.ejs', {msg})
@@ -64,7 +63,7 @@ router.post('/login', async (req, res) => {
             const encryptedId = cryptoJS.AES.encrypt(foundUser.id.toString(),process.env.ENC_KEY).toString();
             res.cookie("userId", encryptedId)
             //To direct to profile instead of main page
-            res.redirect('user/pet.ejs')
+            res.redirect('/users/pet')
         } else {
             res.render('users/login.ejs', {msg})
         }
@@ -96,7 +95,7 @@ router.get('/pet', async (req, res) => {
         url: url,
         headers: {
           Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjhmNmRmNTRkMTMyY2I2M2QyMzRiZTJiZGJlMDgxNTQ3ZTVlOTE5YzJmMmViODU0YzE1Nzg5YTVkYjcxY2I0YzM5NDhlNDRlODRhNDk5YWY3IiwiaWF0IjoxNjU0MTk0Mjk3LCJuYmYiOjE2NTQxOTQyOTcsImV4cCI6MTY1NDE5Nzg5Nywic3ViIjoiIiwic2NvcGVzIjpbXX0.T1cFvMkwD1LHkIaEsBbUc-fEfz1YmecJKRyRMzv_UwL8e-bq_JoH5iERB1be6wyBTxz0Mla3aNmIagayb5Kmf0UwkS1d21Wb19MWGKfgVhEZ7D5ucEkr0Um06SopRr1yNPWDyyfWN7K97L8bkD003lqjyxbSLNSZnzZfgxmHnaRx5D3WRcneDgzhT3GMKOYkj_FVOCTZMo2e9vApIDKP7MsbrDgNA8lmS0QDYHrhoEO3xyyDPcs_pFfvwpkxoYczdP9KVsaDNWgXFyRPEc04lQe9vU5nKoX1VQDyYBcfng40S0tHROYvSf3OeZ5Mjr6VxhxCqBkRzs-UbFpSsAEs6Q",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJZbFNlMllCT3JwWkVVNmV6RnFIa2dzbXlVb3ZraWM3VjBWZjBZWTczQnVkYk1JSk93YSIsImp0aSI6IjgyZTg1ZjdlYTgwM2Q0OTgxYWQ3ZjMyYjYzNWNlMWUyOWY1OWVhN2ZjNmZjNWNmYWUzNzIxMTU0YjY4NDY3M2IxMmY2NmU1NDU2OTQ1ZTMzIiwiaWF0IjoxNjU0MjAyMzcwLCJuYmYiOjE2NTQyMDIzNzAsImV4cCI6MTY1NDIwNTk3MCwic3ViIjoiIiwic2NvcGVzIjpbXX0.CZifLseINAVq2q-Y_I5dvR0z5WnTX1sjM06gvQJdXWqvt_3FDir5zzmrOI3k26ybDWp28Nv41NR5KlBQg5obYqyvA7vUT-upQp-AJbI4Z_jWXs1qGvY8jEOpLlCxqHJtJ2U0UhfRnqBMIMdhjOssfZaNDvD1xrKjal5M675GPLwcQ1GeXWykNSiILNESpSkMyuDv_FjYLxVHEpcy3yNNMaIOXaqvo6GC65qzDQvZeYu4CyWbAi18Sp4oaNPQaKhaE70XHnwiNwDU0RTCPgWnaqiXPUViqWZ45qWLMxOSoOqFcxxpNaxS0ozXVhsa48dsTBBX9KBRJOOqunXwjqn_AQ",
         },
       });
       const animals = await response.data.animals
@@ -109,10 +108,6 @@ router.get('/pet', async (req, res) => {
 
 router.get("/favorites", async (req, res) => {
   const favorites = await db.pet.findAll()
-  console.log("KJDFBFVNQEFKNVKLKNNLK", favorites)
-  // query for the user based on the cookie 
-  // include db.pet
-  // pass that object
   res.render("users/favorites.ejs", {allFavorites:favorites})
 })
 
