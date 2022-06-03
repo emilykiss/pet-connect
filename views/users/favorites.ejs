@@ -1,10 +1,10 @@
 
 
-<h1>Saved Pets!</h1>
+<h1 class="text-white bg-dark">Saved Pets!</h1>
 
 <% allFavorites.forEach(animal => { %>
     <h2><%= animal.dataValues.name %></h2>
-    <img src= "<%= animal.dataValues.url %>"/>
+     <img src= "<%= (animal.photos) ? animal.photos[0].medium : 'null' %>"/>
     <h2><%= animal.dataValues.age %></h2>
 
 
@@ -15,11 +15,3 @@
     
 <% }) %>
 
-<style>
-    * {
-    background-color: pink;
-  }
-    h1, h2 {
-    color: hotpink;
-}
-</style>

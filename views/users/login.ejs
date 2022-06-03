@@ -1,33 +1,39 @@
+<div
+  class="bg-image p-4 text-center shadow-1-strong  mb-6 text-white"
+  style="background-image: url('/images/images.jpg');"
+>
+
+
 <% if (msg) { %>
     <div>
         <p><%= msg %></p>
         <img src="/images/meandog.png"/>
     </div>
 <% } %>
+<div class="text-center mb-3">
+<div class="text-pink-50 mb-5">
+<h2>Login</h2>
+</div>
+</div>
 
 <form id="form" action="/users/login" method="POST">
-    <label for="email">Email:</label>
+    <div class="form-outline mb-4">
+    <div class="text-center mb-3">
+    <label for="email"></label>
     <input id="email" type="email" name="email" placeholder="Enter your email" required />
+    </div>
+    </div>
 
-    <label for="password">Password:</label>
-     <input id="password" type="password" name="password" placeholder="Enter your password" required />
-     <button type="submit">Login!</button>
+    <div class="form-outline mb-4">
+    <div class="text-center mb-3">
+    <label for="password"></label>
+    <input id="password" type="password" name="password" placeholder="Enter your password" required />
+    </div>
+    <br>
+    <div class="text-center mb-3">
+    <button type="submit" class="btn btn-outline-light btn-lg m-2">Login!</button>
+    </div>
+    </div>
 </form>
+</div>
 
-<style>
-    * {
-    background-color: pink;
-    font-size: 30px;
-    color: hotpink;
-  }
-
-    #form {
-        color: hotpink;
-        font-size: 20px;
-        font-family: sans-serif;
-    }
-    p {
-        color: hotpink;
-        font-family: sans-serif;
-    }
-</style>

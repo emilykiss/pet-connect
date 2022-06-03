@@ -19,6 +19,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(methodOverride("_method"))
 app.use(express.static("public"))
+app.use(express.static(__dirname + "/public"))
 // DIY middleware
 // Happens on every request
 app.use((req, res, next) => {

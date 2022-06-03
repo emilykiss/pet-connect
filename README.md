@@ -26,7 +26,7 @@ Can swipe right, left, or hit a super like button
 Route 3- Favorites Page
 You can see your collection 
 
-Route 4- After clicking on a pet from your favorites, you can view their information 
+Route 4- profile page with a bio 
 
 ## User Stories 
 - As a user I want to access a site that shows me adoptable pets one image at a time 
@@ -51,5 +51,4 @@ Route 4- After clicking on a pet from your favorites, you can view their informa
 ## Wireframes 
 ![login](images/login.JPG)
 ![home](images/home.JPG)
-![about](images/about.jpeg)
 ![favorites](images/favorites.jpeg)

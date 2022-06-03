@@ -114,12 +114,11 @@ router.get("/favorites", async (req, res) => {
 })
 
 router.post('/favorites', async (req, res) => {
+    if (!res.locals.user) {
+      res.render("users/login", { msg: "log in" });
+      return
+    }
     try {
-       
-     if(!res.locals.user){
-         res.render('users/login', {msg: 'log in'})
-         return
-     }
         const user = await db.user.findByPk(res.locals.user.dataValues.id)
         const [pet, created] = await db.pet.findOrCreate({
             where: {
@@ -216,6 +215,25 @@ try {
     console.log(error)
 }
 })
+
+// router.delete("/editprofile/:id", async (req, res) => {
+//   try {
+//     if (!res.locals.user) {
+//         res.render("users/login.ejs", { msg: "Please log in to continue" });
+//         return;
+//     }
+//    const comment = await db.comment.update({
+//        content: req.body.edit,
+//      },{
+//        where: {
+//          id: req.params.id,
+//        }
+//      })
+//    res.redirect("/users/profile");
+//   } catch (err) {
+//     console.log(err)
+//   }
+// })
 
 
 module.exports = router

@@ -7,3 +7,9 @@
      <input type="text" id="edit" name="edit" value="<%= comment.content %>" required/>
      <button type="submit">Submit</button>
  </form>
+
+ <form method="POST" action="/users/editprofile/<%= comment.id %>?_method=DELETE">
+        <label for="delete"></label>
+        <input hidden value="<%= comment.id %>" name="delete"/>
+        <button type="submit">Delete</button>
+</form>
