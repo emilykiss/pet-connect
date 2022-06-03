@@ -1,6 +1,6 @@
-# Pet Tinder - Find Your Perfect Match
-What is Pet Tinder 
-An app that allows the user to swipe left, right, or superlike various pets that are up for adoption.
+# Pet Connect - Find Your Perfect Match
+What is Pet Connect 
+An app that allows the user to like various pets that are up for adoption.
 You can add pets to your favorites.
 
 ## The pets are adoptable and can be found on this API:  https://www.petfinder.com/developers/
@@ -30,17 +30,17 @@ Route 4- profile page with a bio
 
 ## User Stories 
 - As a user I want to access a site that shows me adoptable pets one image at a time 
-- As a user I want to be able to like, dislike, and super-like different pets
-- As a user I want to be able to leave comments on the pet profiles 
-- As a user I want to see the pets that I liked or super-liked
+- As a user I want to be able to like and delete different pets
+- As a user I want to be able to leave a bio on my profiles 
+- As a user I want to see the pets that I liked
 
 ## MVP GOALS
 - Four routes
-- Swipe ability 
-- Superlike button
+- CRUD
+- Like button
 - Favorites
 - Pet info from the API
-
+- Profile page
 ## STRETCH GOALS
 - Navbar
 - Very CSSified 
