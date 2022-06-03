@@ -109,9 +109,16 @@ router.get('/pet', async (req, res) => {
 
 
 router.get("/favorites", async (req, res) => {
-  const favorites = await db.pet.findAll()
-  res.render("users/favorites.ejs", {allFavorites:favorites})
+    const user = await db.user.findOne({
+      where: {
+        id: res.locals.user.dataValues.id
+      }, include: [db.pet]
+    })
+    const favorites = await user.pets
+    // console.log("DVJNKEBNV;DNSC DVC;K",favorites)
+    res.render("users/favorites.ejs", {allFavorites:favorites})
 })
+
 
 router.post('/favorites', async (req, res) => {
     if (!res.locals.user) {
@@ -120,7 +127,7 @@ router.post('/favorites', async (req, res) => {
     }
     try {
         const user = await db.user.findByPk(res.locals.user.dataValues.id)
-        const [pet, created] = await db.pet.findOrCreate({
+        const [pet, createdPet] = await db.pet.findOrCreate({
             where: {
                 name: req.body.name
             }, defaults: {
@@ -129,8 +136,19 @@ router.post('/favorites', async (req, res) => {
 
             }
         })
+
+        // const [pet_user, createdPetUser] = await db.pet_user.findOne({
+        //   where: {
+        //     name: req.body.name,
+        //     userId: res.locals.user.id
+        //   },
+        // });
         await user.addPet(pet)
-        const allFavorites = await db.pet.findAll()
+        const allFavorites = await db.pet.findAll({
+            // where: {
+            //     user: res.locals.user.id
+            // }
+        })
         res.render("users/favorites", {allFavorites})
     } catch (error) {
         console.log(error)

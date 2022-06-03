@@ -6,7 +6,7 @@
        <% console.log("animal", animal)%>
        <li>
          <h1><%= animal.name %></h1>
-         <img src= "<%= (animal.photos[0]) ? animal.photos[0].medium : 'null' %>"/>
+         <img src= "<%= (animal.photos[0]) ? animal.photos[0].medium : 'https://place.dog/300/200' %>"/>
       </li>
         <form id="form" method="POST" action="/users/favorites">
          <input hidden value="<%= animal.name %>" name="name"/>
@@ -16,4 +16,3 @@
       </form>
   <% }) %>
 </ul>
-
