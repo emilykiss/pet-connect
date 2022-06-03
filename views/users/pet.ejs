@@ -1,7 +1,12 @@
-
-<h3>Find your forever match!💋</h3>
+<div
+  class="bg-image p-4 text-center shadow-1-strong  mb-6 text-white"
+  style="background-image: url('/images/background.png');"
+>
+<div class="text-center mb-3">
+<h3>Find your forever match</h3>
 
 <ul>
+  <div class="text-center mb-3">
     <% animals.forEach(animal => { %>
        <% console.log("animal", animal)%>
        <li>
@@ -12,7 +17,9 @@
          <input hidden value="<%= animal.name %>" name="name"/>
          <input hidden value="<%= animal.photos.medium %>" name="photos"/>
          <input hidden value="<%= animal.age %>" name="age"/>
-         <button type="submit">Save <%= animal.name %> to your favorites! </button>
+         <button type="submit"> Like </button>
       </form>
   <% }) %>
 </ul>
+</div>
+</div>

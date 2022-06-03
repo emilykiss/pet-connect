@@ -1,6 +1,9 @@
 
-
-<h1 class="text-white bg-dark">Saved Pets!</h1>
+<div
+  class="bg-image p-4 text-center shadow-1-strong  mb-6 text-white"
+  style="background-image: url('/images/background.png');"
+>
+<h1 class="text-white bg-pink">Liked Pets</h1>
 
 <% allFavorites.forEach(animal => { %>
     <h2><%= animal.dataValues.name %></h2>
@@ -11,10 +14,10 @@
     <form method="POST" action="/users/favorites/?_method=DELETE">
         <input hidden value="<%= animal.id %>" name="id"/>
        
-        <button type="submit">Delete</button>
+        <button type="submit">Remove</button>
       
         
       </form>
     
 <% }) %>
-
+</div>
