@@ -101,6 +101,7 @@ router.get('/pet', async (req, res) => {
         },
       });
       const animals = await response.data.animals
+      console.log(animals)
       res.render('users/pet.ejs', {animals, user: res.locals.user})
     } catch (error) {
         console.log(error)
@@ -109,31 +110,34 @@ router.get('/pet', async (req, res) => {
 
 
 router.get("/favorites", async (req, res) => {
+    console.log("!!!!!!!!!!!!!!!!! ")
     const user = await db.user.findOne({
       where: {
         id: res.locals.user.dataValues.id
       }, include: [db.pet]
     })
     const favorites = await user.pets
+    console.log("JUHIFRNV;QERKNVBQOT'4", favorites)
     // console.log("DVJNKEBNV;DNSC DVC;K",favorites)
     res.render("users/favorites.ejs", {allFavorites:favorites})
 })
 
 
 router.post('/favorites', async (req, res) => {
+    console.log(req.body.photos, "!!!!!!!!!")
     if (!res.locals.user) {
       res.render("users/login", { msg: "log in" });
       return
     }
     try {
         const user = await db.user.findByPk(res.locals.user.dataValues.id)
+        console.log(req.body.photos)
         const [pet, createdPet] = await db.pet.findOrCreate({
             where: {
                 name: req.body.name
             }, defaults: {
                 age: req.body.age,
-                url: req.body.photos,
-
+                url: req.body.photos 
             }
         })
 
@@ -144,11 +148,8 @@ router.post('/favorites', async (req, res) => {
         //   },
         // });
         await user.addPet(pet)
-        const allFavorites = await db.pet.findAll({
-            // where: {
-            //     user: res.locals.user.id
-            // }
-        })
+        const allFavorites = await user.getPets()
+        console.log(allFavorites[0], "!!!!!?????????????????????!!!!!!")
         res.render("users/favorites", {allFavorites})
     } catch (error) {
         console.log(error)

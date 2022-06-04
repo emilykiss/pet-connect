@@ -1,25 +1,24 @@
-<div
+<body
   class="bg-image p-4 text-center shadow-1-strong  mb-6 text-white"
   style="background-image: url('/images/background.png');"
 >
 
 <h1>Profile</h1>
-<img src="/images/crazydogg.png" alt="crazydog"/>
+<img class="rounded" src="/images/crazydogg.png" alt="crazydog"/>
 <form method="POST" action="/users/profile">
-  <h2>Bio:</h2>
   <label for="aboutMe"></label>
   <div class="text-center mb-3">
   <textarea type="text" name="content" id="aboutMe" placeholder="Tell us about yourself!" required></textarea>
   </div>
   <input hidden value="<%= user.id %>" name="userId" type="text"/>
-  <button type="submit">Post</button>
+  <button type="submit" class="btn btn-outline-light btn-lg m-2">Post</button>
 </form>
 
 <div>
 <% comments.forEach(comment => { %>
     <h3><%= comment.content %></h3>
-    <a href="/users/editprofile/<%= comment.id %>">Edit</a>
+    <a class="fas fa-bars text-light text-decoration-none btn btn-outline-light btn-lg m-2" href="/users/editprofile/<%= comment.id %>">Edit</a>
     <% }) %>
 </div>
 </div>
-</div>
+</body>

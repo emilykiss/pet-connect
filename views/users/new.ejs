@@ -1,4 +1,4 @@
-<div
+<body
   class="bg-image p-4 text-center shadow-1-strong  mb-6 text-white"
   style="background-image: url('/images/background.png');"
 >
@@ -10,13 +10,11 @@
 
     <img src="/images/meandog.png"/>
 <% } %>
-<div class="text-center mb-3">
-<div class="text-pink-50 mb-5">
-
+<div class="text-center mb-3 p-4">
+<h1>You like animals more than people? This is the site for you...</h1>
 <form action="/users" method="POST">
      <div class="form-outline mb-4">
     <div class="text-center mb-3">
-    <img src="/images/heart.png"/>
     <div class="text-center mb-3">
     <label for="email"></label>
     <input id="email" type="email" name="email" placeholder="Enter your email" required />
@@ -26,11 +24,10 @@
      <input id="password" type="password" name="password" placeholder="Enter your password" required />
     </div>
     <div class="text-center mb-3">
-     <button type="submit">Sign up!</button>
-     </div>
+     <button type="submit" class="btn btn-outline-light btn-lg m-2">Sign up!</button>
      </div>
      </div>
 </form>
 </div>
 </div>
- </div>
+</body>

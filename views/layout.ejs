@@ -10,40 +10,41 @@
   </head>
   <body>
     <header class="m-2">
-    <nav class="navbar navbar-expand-lg navbar-dark d-none d-lg-block" style="z-index: 2000;">
+    <nav class="navbar navbar-expand-lg navbar-dark d-none d-lg-block" style="z-index: 3000;">
     <div class="fas fa-bars text-light">
       <div class="container-fluid">
-        <div class="collapse navbar-collapse" id="navbarExample01">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-2">
         <% if (user) { %>
 
         <li class="nav-item p-2">
           <img src="/images/download.png">
         </li>
-
+        
+        
         <li class="nav-item p-2">
-          <a href="/users/pet">Home</a>
+          <a class="nav-link" href="/users/pet">Home</a>
+        </li>
+      
+        <li class="nav-item p-2">
+          <a class="nav-link" href="/users/favorites">Favorites</a>
         </li>
 
         <li class="nav-item p-2">
-          <a href="/users/favorites">Favorites</a>
+          <a class="nav-link" href="/users/profile">Profile</a>
         </li>
 
         <li class="nav-item p-2">
-          <a href="/users/profile">Profile</a>
+          <a class="nav-link" href="/users/logout">Logout</a>
         </li>
-
-        <li class="nav-item p-2">
-          <a href="/users/logout">Logout</a>
-        </li>
-
+        </div>
         <%}else {%>
         <li class="nav-item p-2">
-          <a href="/users/new">Sign up</a>
+          <a class="nav-link" href="/users/new">Sign up</a>
         </li>
 
         <li class="nav-item p-2">
-          <a href="/users/login">Login</a>
+          <a class="nav-link" href="/users/login">Login</a>
         </li>
 
         <% } %>
