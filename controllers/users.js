@@ -110,25 +110,23 @@ router.get('/pet', async (req, res) => {
 
 
 router.get("/favorites", async (req, res) => {
-    console.log("!!!!!!!!!!!!!!!!! ")
     const user = await db.user.findOne({
       where: {
         id: res.locals.user.dataValues.id
       }, include: [db.pet]
     })
     const favorites = await user.pets
-    console.log("JUHIFRNV;QERKNVBQOT'4", favorites)
-    // console.log("DVJNKEBNV;DNSC DVC;K",favorites)
+    // brings you to the favorites page
     res.render("users/favorites.ejs", {allFavorites:favorites})
 })
 
 
 router.post('/favorites', async (req, res) => {
-    console.log(req.body.photos, "!!!!!!!!!")
     if (!res.locals.user) {
       res.render("users/login", { msg: "log in" });
       return
     }
+    // Here, the logged in user can add a pet to their favorites page.
     try {
         const user = await db.user.findByPk(res.locals.user.dataValues.id)
         console.log(req.body.photos)
@@ -140,39 +138,37 @@ router.post('/favorites', async (req, res) => {
                 url: req.body.photos 
             }
         })
-
-        // const [pet_user, createdPetUser] = await db.pet_user.findOne({
-        //   where: {
-        //     name: req.body.name,
-        //     userId: res.locals.user.id
-        //   },
-        // });
         await user.addPet(pet)
         const allFavorites = await user.getPets()
-        console.log(allFavorites[0], "!!!!!?????????????????????!!!!!!")
+        // console.log(allFavorites[0], "!!!!!?????????????????????!!!!!!")
+        // The pet has been added and you  are taken back to favorites.
         res.render("users/favorites", {allFavorites})
     } catch (error) {
         console.log(error)
     }
 })
 
-
+// This is the delete route, where a user can delete a pet from their favorites.
 router.delete('/favorites', async (req, res) => {
     console.log(req.body.id)
+    // We are finding the pet from the database with its specific id.
     try {
         const instance = await db.pet.findOne({
         where: {
             id: req.body.id
         }
     })
-    console.log(instance)
+    // Here, the destroyig is happening.
     await instance.destroy()
+    //  The user is redirecte to the favorites page, and the deleted pet is no longer  there.
     res.redirect('/users/favorites')
   } catch (err) {
     console.log(err)
   }
 })
 
+// This is the get route for the logged in user. 
+// The bio rendered on this page only belongs to the user that is currently logged in.
 router.get('/profile', async (req, res) => {
     try {
         if (!res.locals.user) {
@@ -190,6 +186,8 @@ router.get('/profile', async (req, res) => {
     }
 })
 
+// This is where the user can post their bio. 
+// The  users comments are stored in the comments database.
 router.post('/profile', async (req, res) => {
     await db.comment.create({
       content: req.body.content,
