@@ -1,9 +1,11 @@
+<!-- Body Styling -->
+<!-- This is the page for editing a comment. -->
 <body
   class="bg-image p-4 text-center shadow-1-strong  mb-6 text-white"
   style="background-image: url('/images/background.png');"
 >
  <h3><%= comment.content %></h3>
-
+<!-- The edit submit form -->
 <form method="POST" action="/users/editprofile/<%= comment.id %>?_method=PUT">
      <label for="edit"></label>
      <input type="text" id="edit" name="edit" value="<%= comment.content %>" required/>

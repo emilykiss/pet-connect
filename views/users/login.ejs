@@ -1,40 +1,54 @@
+<!-- Body Styling -->
 <body
-  class="bg-image p-4 text-center shadow-1-strong  mb-6 text-white"
-  style="background-image: url('/images/background.png');"
+  class="bg-image p-4 text-center shadow-1-strong mb-6 text-white"
+  style="background-image: url('/images/background.png')"
 >
-
-
-<% if (msg) { %>
-    <div>
-        <p><%= msg %></p>
-        <img src="/images/meandog.png"/>
+  <!-- If the user's login fails, do this (render an image of a judgmental dog). -->
+  <% if (msg) { %>
+  <div>
+    <p><%= msg %></p>
+    <img src="/images/meandog.png" />
+  </div>
+  <% } %>
+  <div class="text-center mb-3">
+    <div class="text-pink-50 mb-5">
+      <!-- Text displayed on the page. -->
+      <h2>Your other half is waiting to be found...</h2>
     </div>
-<% } %>
-<div class="text-center mb-3">
-<div class="text-pink-50 mb-5">
-<!-- <img src="/images/heart.png"> -->
-<h2>Your other half is waiting to be found...</h2>
-</div>
-</div>
-
-<form id="form" action="/users/login" method="POST">
+  </div>
+  <!-- The email form -->
+  <form id="form" action="/users/login" method="POST">
     <div class="form-outline mb-4">
-    <div class="text-center mb-3">
-    <label for="email"></label>
-    <input id="email" type="email" name="email" placeholder="Enter your email" required />
+      <div class="text-center mb-3">
+        <label for="email"></label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Enter your email"
+          required
+        />
+      </div>
     </div>
-    </div>
-
+    <!-- The password form -->
     <div class="form-outline mb-4">
-    <div class="text-center mb-3">
-    <label for="password"></label>
-    <input id="password" type="password" name="password" placeholder="Enter your password" required />
+      <div class="text-center mb-3">
+        <label for="password"></label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+      <br />
+      <!-- The login button -->
+      <div class="text-center mb-3">
+        <button type="submit" class="btn btn-outline-light btn-lg m-2">
+          Login
+        </button>
+      </div>
     </div>
-    <br>
-    <div class="text-center mb-3">
-    <button type="submit" class="btn btn-outline-light btn-lg m-2">Login</button>
-    </div>
-    </div>
-</form>
+  </form>
 </body>
-

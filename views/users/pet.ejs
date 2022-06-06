@@ -1,18 +1,21 @@
+<!-- This is where the main page is rendered. -->
+<!-- Body Styling -->
 <body
   class="bg-image p-4 text-center shadow-2-strong  mb-6 text-white"
   style="background-image: url('/images/pink.png');"
 >
 <div class="text-center mb-3">
+<!-- This is what the page says. -->
 <h3>We've found thousands of matches in your area.</h3>
 <h3>And they all happen to be in the market for an owner. </h3>
-<h3>Click on their names to get their info!</h3>
-
+<h3>Click on their names to get their info and put in an application!</h3>
+<!-- With the help of a for each loop, this is where the pets are rendered. -->
 <ul>
   <div class="text-center mb-3" style="list-style: none;">
     <% animals.forEach(animal => { %>
    
        <li>
-        
+        <!-- These are the characteristics that are displayed. -->
         <img class="rounded" src= "<%= (animal.photos[0]) ? animal.photos[0].medium : 'https://place.dog/300/200' %>"/>
         <h1><a class="fas fa-bars text-light text-decoration-none" href="<%= animal.url %>"><%= animal.name %></a></h1>
         <p><%= animal.gender %></p>
@@ -20,6 +23,7 @@
         <p><%= animal.size %></p>
         <p><%= animal.tags[0] %></p>
       </li>
+      <!-- This is the form that posts the information to the favorites page. -->
         <form id="form" method="POST" action="/users/favorites">
          <input hidden value="<%= animal.name %>" name="name"/>
          <input hidden value="<%= animal.photos[0] ? animal.photos[0].medium : 'https://place.dog/300/200' %>" name="photos"/>
