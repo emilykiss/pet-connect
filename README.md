@@ -10,7 +10,8 @@ This is the part I'm the most confused about.
 I was thinking:
 Model 1- users
 Model 2- pets
-Model 3- actions columns -> like, dislike, superlike
+Model 3- pets and users join table
+Model 4- comments
 ![ERD](newERD.png)
 
 
@@ -52,3 +53,9 @@ Route 4- profile page with a bio
 ![login](images/login.JPG)
 ![home](images/home.JPG)
 ![favorites](images/favorites.jpeg)
+
+## Post Project Reflections
+- I knew that this project would be difficult, however, it proved to be even more challenging than I anticipated.
+- I wanted the app to look and feel like a dating app, but I did not have enough time to focus on both functionality and appearance as much as I would have liked to.
+- Overall, I have a better understanding of CRUD routes- but ERD's still confuse me.
+- I would like to go back and focus more on making the site more aesthetically pleasing and user focused.

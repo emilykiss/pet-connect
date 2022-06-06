@@ -73,8 +73,8 @@ router.post('/login', async (req, res) => {
         console.log(error)
     }
 })
-// GET /users/logout -- clear the coookie to log the user out
 
+// This is where the user is logged out.
 router.get('/logout',  (req, res) => {
    res.clearCookie("userId")
    res.redirect('/users/login')
@@ -83,14 +83,15 @@ router.get('/logout',  (req, res) => {
 
 router.get('/pet', async (req, res) => {
      try {
+         // This function was created in the test.js file. It automates access to the API.
          const header = await accessToken()
-      //check if user is authorized
+      //This checks if the user is authorized.
       if (!res.locals.user) {
-        // if the user is not authorized, ask them to log in
+        // If the user is not authorized, ask them to log in.
         res.render("users/login.ejs", { msg: "Your new best friend is waiting for you. Log in to connect:" });
         return; // end the route here
       }
-      //this is where I am going to upload the images
+      // Images for the main page.
       const url = "https://api.petfinder.com/v2/animals";
       const response = await axios({
         method: "get",
@@ -108,7 +109,7 @@ router.get('/pet', async (req, res) => {
     }
 })
 
-
+// This is the favorites GET route (the data request).
 router.get("/favorites", async (req, res) => {
     const user = await db.user.findOne({
       where: {
@@ -120,7 +121,7 @@ router.get("/favorites", async (req, res) => {
     res.render("users/favorites.ejs", {allFavorites:favorites})
 })
 
-
+// This route allows the logged in user to add to their favorites page.
 router.post('/favorites', async (req, res) => {
     if (!res.locals.user) {
       res.render("users/login", { msg: "log in" });
