@@ -189,20 +189,23 @@ router.get('/profile', async (req, res) => {
 // This is where the user can post their bio. 
 // The  users comments are stored in the comments database.
 router.post('/profile', async (req, res) => {
+// This is where the bio is created.
     await db.comment.create({
       content: req.body.content,
       userId: req.body.userId
     })
+// Finally, we are brought back to the user's profile with their updated information.
     res.redirect('/users/profile')
 })
 
+// GET route for the user's bio.
 router.get('/editprofile/:id', async (req, res) => {
-    
     if (!res.locals.user) {
       res.render("users/login.ejs", { msg: "Please log in to continue" })
       return
     }
     try {
+// Here is where we are locating the user's specific information.
         const comment = await db.comment.findOne({
           where: {
             id: req.params.id
@@ -214,12 +217,14 @@ router.get('/editprofile/:id', async (req, res) => {
     }
 })
 
+// This route allows the logged in user to update their information.
 router.put('/editprofile/:id', async (req, res) => {
 try {
     if (!res.locals.user) {
       res.render("users/login.ejs", { msg: "Please log in to continue" });
       return;
     }
+// This is where the comment is updated.
     const comment = await db.comment.update({
        content: req.body.edit
       }, {
@@ -227,30 +232,12 @@ try {
            id: req.params.id
       }
     })
+// Finally, we are not redirected back to the profile with the updated information.
     res.redirect("/users/profile")
 } catch (error) {
     console.log(error)
 }
 })
-
-// router.delete("/editprofile/:id", async (req, res) => {
-//   try {
-//     if (!res.locals.user) {
-//         res.render("users/login.ejs", { msg: "Please log in to continue" });
-//         return;
-//     }
-//    const comment = await db.comment.update({
-//        content: req.body.edit,
-//      },{
-//        where: {
-//          id: req.params.id,
-//        }
-//      })
-//    res.redirect("/users/profile");
-//   } catch (err) {
-//     console.log(err)
-//   }
-// })
 
 
 module.exports = router
