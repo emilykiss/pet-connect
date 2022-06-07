@@ -190,6 +190,10 @@ router.get('/profile', async (req, res) => {
 // This is where the user can post their bio. 
 // The  users comments are stored in the comments database.
 router.post('/profile', async (req, res) => {
+    if (!res.locals.user) {
+      res.render("users/login", { msg: "log in" });
+      return;
+    }
 // This is where the bio is created.
     await db.comment.create({
       content: req.body.content,
