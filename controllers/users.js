@@ -224,11 +224,11 @@ router.get('/editprofile/:id', async (req, res) => {
 
 // This route allows the logged in user to update their information.
 router.put('/editprofile/:id', async (req, res) => {
-try {
     if (!res.locals.user) {
       res.render("users/login.ejs", { msg: "Please log in to continue" });
       return;
     }
+try {
 // This is where the comment is updated.
     const comment = await db.comment.update({
        content: req.body.edit
