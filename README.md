@@ -1,6 +1,14 @@
 # Link To PetConnect
 https://petconnection.herokuapp.com/users/login
 
+# Installation Instructions 
+- Fork and clone the repository.
+- In order to install the dependencies, run npm i iin your terminal.
+- Set an ENC-KEY in your created .env file.
+- Get an API key and a secret from the petfinder website below, and put them in your .env file.
+- Put your .env file and your node_modules folders inside of a .gitignore file.
+- Find a fur baby to take home!!
+
 # Pet Connect - Find Your Perfect Match
 What is Pet Connect 
 An app that allows the user to like various pets that are up for adoption.
