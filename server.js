@@ -60,6 +60,7 @@ app.get('/', (req, res) => {
 })
 // Controllers
 app.use('/users', require('./controllers/users'))
+app.use('/favorites', require('./controllers/favorites'))
 
 
 
