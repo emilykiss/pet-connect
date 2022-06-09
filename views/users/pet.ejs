@@ -24,7 +24,7 @@
         <p><%= animal.tags[0] %></p>
       </li>
       <!-- This is the form that posts the information to the favorites page. -->
-        <form id="form" method="POST" action="/users/favorites">
+        <form id="form" method="POST" action="/favorites">
          <input hidden value="<%= animal.name %>" name="name"/>
          <input hidden value="<%= animal.photos[0] ? animal.photos[0].medium : 'https://place.dog/300/200' %>" name="photos"/>
          <input hidden value="<%= animal.age %>" name="age"/>

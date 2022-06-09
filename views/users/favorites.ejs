@@ -9,7 +9,7 @@
   <img src="<%= animal.url %>" />
   <h2><%= animal.dataValues.age %></h2>
 
-  <form method="POST" action="/users/favorites/?_method=DELETE">
+  <form method="POST" action="/favorites/?_method=DELETE">
     <input hidden value="<%= animal.id %>" name="id" />
     <button type="submit" class="btn btn-outline-light btn-lg m-2">Remove</button>
   </form>
