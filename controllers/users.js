@@ -29,7 +29,7 @@ router.post("/users", async (req, res) => {
         process.env.ENC_KEY
       ).toString()
       res.cookie("userId", encryptedId);
-      res.redirect("users/pet");
+      res.redirect("/pets");
     } else {
       // if the user was not created, re-render the login form with a message
       res.render("users/new.ejs", {
@@ -68,7 +68,7 @@ router.post("/login", async (req, res) => {
       ).toString();
       res.cookie("userId", encryptedId);
       //To direct to profile instead of main page
-      res.redirect("/users/pet");
+      res.redirect("/pets");
     } else {
       res.render("users/login.ejs", { msg });
     }
@@ -83,34 +83,6 @@ router.get("/logout", (req, res) => {
   res.redirect("/users/login");
 });
 
-router.get("/pet", async (req, res) => {
-  try {
-    // This function was created in the test.js file. It automates access to the API.
-    const header = await accessToken();
-    //This checks if the user is authorized.
-    if (!res.locals.user) {
-      // If the user is not authorized, ask them to log in.
-      res.render("users/login.ejs", {
-        msg: "Your new best friend is waiting for you. Log in to connect:",
-      });
-      return; // end the route here
-    }
-    // Images for the main page.
-    const url = "https://api.petfinder.com/v2/animals";
-    const response = await axios({
-      method: "get",
-      url: url,
-      headers: {
-        Authorization: header,
-      },
-    });
-    const animals = await response.data.animals;
-    console.log(animals);
-    res.render("users/pet.ejs", { animals, user: res.locals.user });
-  } catch (error) {
-    console.log(error);
-  }
-});
 
 // This route allows the logged in user to add to their favorites page.
 router.post("/favorites", async (req, res) => {
@@ -196,7 +168,7 @@ router.post("/profile", async (req, res) => {
 });
 
 // GET route for the user's bio.
-router.get("/editprofile/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   if (!res.locals.user) {
     res.render("users/login.ejs", { msg: "Please log in to continue" });
     return;
@@ -208,14 +180,14 @@ router.get("/editprofile/:id", async (req, res) => {
         id: req.params.id,
       },
     });
-    res.render("users/editprofile", { comment });
+    res.render("users/editcomment", { comment });
   } catch (error) {
     console.log(error);
   }
 });
 
 // This route allows the logged in user to update their information.
-router.put("/editprofile/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   if (!res.locals.user) {
     res.render("users/login.ejs", { msg: "Please log in to continue" });
     return;

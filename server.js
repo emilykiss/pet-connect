@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser')
 const db = require('./models')
 const cryptoJS = require('crypto-js')
 const methodOverride = require('method-override')
+const accessToken = require("./test.js")
+const { default: axios } = require("axios")
 // app config
 const PORT = process.env.PORT || 3000
 const app = express()
@@ -58,9 +60,40 @@ app.get('/', (req, res) => {
   console.log(res.locals)
   res.render('index')
 })
+
+app.get("/pets", async (req, res) => {
+  try {
+    // This function was created in the test.js file. It automates access to the API.
+    const header = await accessToken();
+    //This checks if the user is authorized.
+    if (!res.locals.user) {
+      // If the user is not authorized, ask them to log in.
+      res.render("users/login.ejs", {
+        msg: "Your new best friend is waiting for you. Log in to connect:",
+      });
+      return; // end the route here
+    }
+    // Images for the main page.
+    const url = "https://api.petfinder.com/v2/animals";
+    const response = await axios({
+      method: "get",
+      url: url,
+      headers: {
+        Authorization: header,
+      },
+    });
+    const animals = await response.data.animals;
+    console.log(animals);
+    res.render("users/pet.ejs", { animals, user: res.locals.user });
+  } catch (error) {
+    console.log(error);
+  }
+})
+
 // Controllers
 app.use('/users', require('./controllers/users'))
 app.use('/favorites', require('./controllers/favorites'))
+
 
 
 

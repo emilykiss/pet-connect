@@ -6,7 +6,7 @@
 >
  <h3><%= comment.content %></h3>
 <!-- The edit submit form -->
-<form method="POST" action="/users/editprofile/<%= comment.id %>?_method=PUT">
+<form method="POST" action="/users/<%= comment.id %>?_method=PUT">
      <label for="edit"></label>
      <input type="text" id="edit" name="edit" value="<%= comment.content %>" required/>
      <button type="submit" class="btn btn-outline-light btn-lg m-2">Submit</button>
