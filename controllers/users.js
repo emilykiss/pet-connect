@@ -160,7 +160,6 @@ router.put("/:id", async (req, res) => {
         {
           where: {
             id: req.params.id,
-            userId: req.body.userId,
           },
         }
       )
